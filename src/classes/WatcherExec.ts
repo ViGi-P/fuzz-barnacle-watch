@@ -175,7 +175,7 @@ export class Watcher {
       this.commands.forEach(async (command) => {
         console.log(
           chalk.bold.blueBright("executing:"),
-          chalk.italic.white(command),
+          chalk.italic.underline.white(command),
         );
         const splitCommands = command.split(" ");
         const child = spawn(splitCommands[0], splitCommands.slice(1));
@@ -184,24 +184,24 @@ export class Watcher {
 
         for await (const data of child.stdout) {
           process.stdout.write(
-            `${chalk.italic.white(`${command}`)} ${
+            `${chalk.italic.underline.white(`${command}`)} ${
               chalk.bold.blueBright("stdout:")
-            } ${data}`,
+            }\n${data}`,
           );
         }
 
         for await (const data of child.stderr) {
           process.stdout.write(
-            `${chalk.italic.white(`${command}`)} ${
+            `${chalk.italic.underline.white(`${command}`)} ${
               chalk.bold.redBright("stderr:")
-            } ${data},`,
+            }\n${data},`,
           );
           // child.kill(9);
         }
 
         child.on("close", (code, signal) => {
           console.log(
-            chalk.italic.white(command),
+            chalk.italic.underline.white(command),
             chalk.bold.blueBright(`exit code:`),
             code,
             chalk.bold.blueBright(`signal:`),
