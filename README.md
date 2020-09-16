@@ -1,6 +1,6 @@
 # fuzz-barnacle-watch (fbw) <a name="README"></a>
 
-Watch directories/files for changes and run commands.
+Watch directories for changes and run commands.
 
 ## Installation
 
@@ -9,5 +9,5 @@ Watch directories/files for changes and run commands.
 
 ## Usage
 
-- `fbw --target relative_path/to/file_or_directory --command "echo changed" -t relative_path/to/another_file_or_directory -c "echo modified"`.
+- `fbw --target relative_path/to/directory --command "echo changed" -t relative_path/to/another_directory -c "echo modified"`.
 - Help - `fbw --help`.

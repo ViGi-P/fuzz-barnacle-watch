@@ -1,12 +1,12 @@
 {
   "name": "@vigi-p/fbw",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Watch directories/files for changes and run commands",
   "main": "dist/index.js",
   "files": [
     "/dist"
   ],
-  "homepage": "https://github.com/ViGi-P/fuzz-branacle-watch#README",
+  "homepage": "https://github.com/ViGi-P/fuzz-barnacle-watch#README",
   "repository": {
     "type": "git",
     "url": "https://github.com/ViGi-P/fuzz-barnacle-watch.git"
