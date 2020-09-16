@@ -42,11 +42,12 @@ export class Watcher {
     );
   }
 
-  static safeExit() {
-    if (--Watcher.watchCount === 0) {
-      if (!Watcher.clientEnded) {
-        Watcher.client.end();
-        Watcher.clientEnded = true;
+  static safeExit(message: string) {
+    if (--this.watchCount === 0) {
+      if (!this.clientEnded) {
+        console.log(message);
+        this.client.end();
+        this.clientEnded = true;
       }
       process.exit(0);
     }
@@ -94,11 +95,6 @@ export class Watcher {
   private setupExit() {
     ['SIGINT', 'SIGUSR1', 'SIGUSR2', 'SIGTERM'].forEach((eventType) => {
       process.on(eventType, (eventType) => {
-        console.log(
-          chalk.bold(
-            chalk.whiteBright(`\n${eventType} triggered, exiting gracefully`)
-          )
-        );
         Watcher.client.command(['unsubscribe', this.target, this.target], (
           error /*, resp*/
         ) => {
@@ -106,7 +102,16 @@ export class Watcher {
             throw error;
           }
 
-          this.deleteWatch(Watcher.safeExit);
+          this.deleteWatch(
+            Watcher.safeExit.bind(
+              Watcher,
+              chalk.bold(
+                chalk.whiteBright(
+                  `\n${eventType} triggered, exiting gracefully`
+                )
+              )
+            )
+          );
         });
       });
     });
@@ -139,7 +144,7 @@ export class Watcher {
       error /*, resp*/
     ) => {
       if (error) {
-        this.deleteWatch(Watcher.safeExit);
+        this.deleteWatch(Watcher.safeExit.bind(Watcher, error.message));
         throw error;
       }
       Watcher.watchCount++;

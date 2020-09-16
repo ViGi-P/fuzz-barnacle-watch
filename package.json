@@ -1,6 +1,6 @@
 {
   "name": "@vigi-p/fbw",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Watch directories/files for changes and run commands",
   "main": "dist/index.js",
   "homepage": "https://github.com/ViGi-P/fuzz-branacle-watch#README",
