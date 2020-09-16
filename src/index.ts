@@ -1,16 +1,8 @@
 #!/usr/bin/env node
 
 import { program } from '@caporal/core';
-// import { promisify } from 'util';
+import { Watcher } from './WatcherExec';
 
-import {
-  usageError,
-  formatTarget,
-  isTargetDir,
-  checkWatchmanInstalled,
-  setupExit,
-  addWatch,
-} from './utils';
 const packageDetails = require('../package.json');
 
 program
@@ -40,45 +32,19 @@ program
           typeof c === 'number' ||
           typeof c === 'boolean')
       ) {
-        const target = formatTarget(`${t}`);
-        const command = `${c}`;
-        await isTargetDir(target);
-
-        logger.info(`${target} exists, can try running ${command}`);
-
-        // check capability
-        await checkWatchmanInstalled();
-        // setup exit
-        setupExit();
-
-        // add watch
-        await addWatch(target, (error, resp) => {
-          if (error) {
-            throw error;
-          }
-
-          if ('warning' in resp) {
-            logger.warn(resp.warning);
-          }
-
-          logger.info(`Watching ${resp.watch}`);
-          // makeSubscription(client, resp.watch, resp.relative_path);
-        });
+        new Watcher(t, [`${c}`]);
       } else if (
         typeof t === 'object' &&
         typeof c === 'object' &&
         t.length === c.length
       ) {
-        const targets = t.map(formatTarget);
-        const commands = c.map((com) => `${com}`);
-        await Promise.all(targets.map(isTargetDir));
-
-        logger.info(`${targets} exist, can try running respective ${commands}`);
+        logger.info('Not implemented');
       } else {
-        throw usageError;
+        throw Watcher.usageError;
       }
     } catch (error) {
       logger.error(error.message);
+      process.exit(0);
     }
   });
 
