@@ -1,9 +1,16 @@
 #!/usr/bin/env node
 
 import { program } from '@caporal/core';
-import { Watcher } from './WatcherExec';
+import { formatOpts } from './utils';
+import { Watcher } from './classes';
 
 const packageDetails = require('../package.json');
+
+function createWatcher(formattedOpts: ReturnType<typeof formatOpts>) {
+  for (const target in formattedOpts) {
+    new Watcher(target, formattedOpts[target]);
+  }
+}
 
 program
   .version(packageDetails.version)
@@ -32,13 +39,15 @@ program
           typeof c === 'number' ||
           typeof c === 'boolean')
       ) {
-        new Watcher(t, [`${c}`]);
+        const formattedOpts = formatOpts([t], [c]);
+        createWatcher(formattedOpts);
       } else if (
         typeof t === 'object' &&
         typeof c === 'object' &&
         t.length === c.length
       ) {
-        logger.info('Not implemented');
+        const formattedOpts = formatOpts(t, c);
+        createWatcher(formattedOpts);
       } else {
         throw Watcher.usageError;
       }

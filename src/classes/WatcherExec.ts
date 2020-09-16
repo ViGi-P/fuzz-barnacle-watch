@@ -1,4 +1,4 @@
-import { chalk, ParserTypes } from '@caporal/core';
+import chalk from 'chalk';
 import watchman from 'fb-watchman';
 import { promisify } from 'util';
 import { DirChecker } from './DirChecker';
@@ -27,7 +27,8 @@ interface SubscriptionResponse {
 export class Watcher {
   private t!: string;
   static client = new watchman.Client();
-  static subscriptions = 0;
+  static clientEnded: boolean = false;
+  static watchCount = 0;
 
   static checkWatchmanInstalled() {
     this.client.capabilityCheck(
@@ -42,8 +43,11 @@ export class Watcher {
   }
 
   static safeExit() {
-    if (Watcher.subscriptions === 0) {
-      Watcher.client.end();
+    if (--Watcher.watchCount === 0) {
+      if (!Watcher.clientEnded) {
+        Watcher.client.end();
+        Watcher.clientEnded = true;
+      }
       process.exit(0);
     }
   }
@@ -53,7 +57,7 @@ export class Watcher {
   );
 
   set target(target: string) {
-    if (target === '.' || target === './' || target === '/') {
+    if (target === '/') {
       target = '';
     } else {
       if (target.indexOf('./') === 0) target = target.slice(2);
@@ -71,9 +75,9 @@ export class Watcher {
     return this.t;
   }
 
-  constructor(t: ParserTypes, private commands: string[]) {
+  constructor(t: string, private commands: string[]) {
     Watcher.checkWatchmanInstalled();
-    this.target = `${t}`;
+    this.target = t;
     this.setupExit();
     this.addWatch();
   }
@@ -102,7 +106,6 @@ export class Watcher {
             throw error;
           }
 
-          Watcher.subscriptions--;
           this.deleteWatch(Watcher.safeExit);
         });
       });
@@ -139,7 +142,7 @@ export class Watcher {
         this.deleteWatch(Watcher.safeExit);
         throw error;
       }
-      Watcher.subscriptions++;
+      Watcher.watchCount++;
     });
 
     Watcher.client.on('subscription', (resp: SubscriptionResponse) => {
