@@ -1,4 +1,4 @@
-import { ParserTypes } from '@caporal/core';
+import { ParserTypes } from "@caporal/core";
 
 interface ResObject {
   [key: string]: string[];
@@ -9,7 +9,7 @@ export function formatOpts(targets: ParserTypes[], commands: ParserTypes[]) {
 
   targets.forEach((target, i) => {
     let key = `${target}`;
-    if (key === '.' || key === './' || key === '/') key = '/';
+    if (key === "." || key === "./") key = ".";
     if (res[key]) res[key].push(`${commands[i]}`);
     else res[key] = [`${commands[i]}`];
   });
