@@ -1,6 +1,6 @@
 {
   "name": "@vigi-p/fbw",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Watch directories/files for changes and run commands",
   "main": "dist/index.js",
   "files": [
@@ -22,7 +22,9 @@
   "scripts": {
     "start": "NODE_ENV=development ./node_modules/.bin/tsc -w",
     "build": "rm -rf dist && ./node_modules/.bin/tsc",
-    "docs": "typedoc"
+    "docs": "typedoc",
+    "test-one": "./dist/index.js -t ./src -c 'serve test/serve -l 3000'",
+    "test-two": "./dist/index.js -t ./src -c 'node test/node.js'"
   },
   "devDependencies": {
     "@types/fb-watchman": "2.0.0",
