@@ -23,7 +23,7 @@ interface SubscriptionResponse {
   is_fresh_instance: boolean;
 }
 
-export class WatchExec {
+export class WatcherExec {
   private t!: string;
   static client = new watchman.Client();
   static clientEnded: boolean = false;
@@ -76,14 +76,14 @@ export class WatchExec {
   }
 
   constructor(t: string, private commands: string[]) {
-    WatchExec.checkWatchmanInstalled();
+    WatcherExec.checkWatchmanInstalled();
     this.target = t;
     this.setupExit();
     this.addWatch();
   }
 
   private deleteWatch(cb: Function) {
-    WatchExec.client.command(["watch-del", this.target], (err /*, resp*/) => {
+    WatcherExec.client.command(["watch-del", this.target], (err /*, resp*/) => {
       if (err) {
         throw err;
       }
@@ -94,7 +94,7 @@ export class WatchExec {
   private setupExit() {
     ["SIGINT", "SIGUSR1", "SIGUSR2", "SIGTERM"].forEach((eventType) => {
       process.on(eventType, (eventType) => {
-        WatchExec.client.command(["unsubscribe", this.target, this.target], (
+        WatcherExec.client.command(["unsubscribe", this.target, this.target], (
           error, /*, resp*/
         ) => {
           if (error) {
@@ -102,8 +102,8 @@ export class WatchExec {
           }
 
           this.deleteWatch(
-            WatchExec.safeExit.bind(
-              WatchExec,
+            WatcherExec.safeExit.bind(
+              WatcherExec,
               chalk.bold.whiteBright(
                 `\n${eventType} triggered, shutting down`,
               ),
@@ -115,7 +115,7 @@ export class WatchExec {
   }
 
   private addWatch() {
-    WatchExec.client.command(
+    WatcherExec.client.command(
       ["watch", this.target],
       (error, resp: WatchResponse) => {
         if (error) {
@@ -137,17 +137,17 @@ export class WatchExec {
       ...(relative_path ? { relative_root: relative_path } : {}),
     };
 
-    WatchExec.client.command(["subscribe", this.target, this.target, sub], (
+    WatcherExec.client.command(["subscribe", this.target, this.target, sub], (
       error, /*, resp*/
     ) => {
       if (error) {
-        this.deleteWatch(WatchExec.safeExit.bind(WatchExec, error.message));
+        this.deleteWatch(WatcherExec.safeExit.bind(WatcherExec, error.message));
         throw error;
       }
-      WatchExec.watchCount++;
+      WatcherExec.watchCount++;
     });
 
-    WatchExec.client.on("subscription", (resp: SubscriptionResponse) => {
+    WatcherExec.client.on("subscription", (resp: SubscriptionResponse) => {
       if (resp.subscription !== this.target) return;
 
       this.pids.forEach((pid) => process.kill(pid));
@@ -193,22 +193,25 @@ export class WatchExec {
           );
           this.pids.push(child.pid);
         } catch (error) {
-          WatchExec.client.command(["unsubscribe", this.target, this.target], (
-            err, /*, resp*/
-          ) => {
-            if (err) {
-              throw err;
-            }
+          WatcherExec.client.command(
+            ["unsubscribe", this.target, this.target],
+            (
+              err, /*, resp*/
+            ) => {
+              if (err) {
+                throw err;
+              }
 
-            this.deleteWatch(
-              WatchExec.safeExit.bind(
-                WatchExec,
-                chalk.bold.yellowBright(
-                  `\nerror occurred while running ${command} at ${this.target}`,
+              this.deleteWatch(
+                WatcherExec.safeExit.bind(
+                  WatcherExec,
+                  chalk.bold.yellowBright(
+                    `\nerror occurred while running ${command} at ${this.target}`,
+                  ),
                 ),
-              ),
-            );
-          });
+              );
+            },
+          );
           throw error;
         }
 

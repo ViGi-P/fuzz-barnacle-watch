@@ -9,5 +9,5 @@ Watch directories for changes and run commands.
 
 ## Usage
 
-- `fbw --target relative_path/to/directory --command "echo changed" -t relative_path/to/another_directory -c "echo modified"`.
+- `fbw --target relative_path/to/directory --command "echo changed"`.
 - Help - `fbw --help`.
