@@ -23,6 +23,7 @@ export class FBW {
             commands,
             this.removeDir,
             this.sync,
+            this.ignoreArray,
           );
         }
 
@@ -31,7 +32,11 @@ export class FBW {
     );
   }
 
-  constructor(private options: ParsedData, private sync: boolean) {
+  constructor(
+    private options: ParsedData,
+    private sync: boolean,
+    private ignoreArray: string[],
+  ) {
     this.checkWatchmanInstallation();
   }
 

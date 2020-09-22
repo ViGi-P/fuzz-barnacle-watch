@@ -15,7 +15,7 @@ In EXAMPLES <2>, there are two commands associated with \`src\` & two commands a
 
 const examples = [
   chalk.yellowBright(
-    "fbw --target=src --run='echo changed' --target=./src --run='echo another'",
+    "fbw --target=src --run='echo changed' --target=./src --run='echo another' --ignore='src/db.json, src/mockData.js'",
   ),
   chalk.yellowBright(
     "fbw sync -t=src -r='echo src:1' -t=dist -r='echo dist:1' -t=src -r='echo src:2' -t=dist -r='echo dist:2'",
@@ -42,15 +42,22 @@ program
     "-t, --target <directory...>",
     "Watches <directory> for changes",
   )
+  .option(
+    "-i, --ignore <files/directories>",
+    "Ignores specified <files/directories> within targets",
+  )
   .action(async ({ options, args }) => {
     const t = typeof options.target === "object"
       ? options.target
       : [options.target];
+    const i = `${options.ignore}`.split(",").map((item) =>
+      ValidOptions.parseTarget(item.trim())
+    );
     const r = typeof options.run === "object" ? options.run : [options.run];
     const s = Object.keys(args).some((key) => key === "sync");
     try {
       const options = new ValidOptions(t, r);
-      /*const fbw = */ new FBW(options.data, s);
+      /*const fbw = */ new FBW(options.data, s, i);
     } catch (error) {
       console.error(labels.error, error.message);
       console.log(

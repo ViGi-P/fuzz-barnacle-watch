@@ -9,7 +9,7 @@ Watch directories for changes and run commands.
 
 ## Usage
 
-- `fbw --target=src --run='echo changed' --target=./src --run='echo another'`.
+- `fbw --target=src --run='echo changed' --target=./src --run='echo another' --ignore='src/db.json, src/mockData.js'`.
 - `fbw sync -t=src -r='echo src:1' -t=dist -r='echo dist:1' -t=src -r='echo src:2' -t=dist -r='echo dist:2'`.
 - Help - `fbw --help`.
 

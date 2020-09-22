@@ -27,20 +27,27 @@ export class Watch {
   private client = new watchman.Client();
   private exitCleanupCB: Function;
   private children: ChildProcess[] = [];
+  private ignoreArray: string[];
 
   constructor(
     directory: string,
     private commands: string[],
     exitCleanupCB: Function,
     private synchronously: boolean,
+    ignoreArray: string[],
   ) {
     this.directory = directory === "."
       ? process.cwd()
       : `${process.cwd()}/${directory}`;
-    this.addWatch();
+    this.ignoreArray = ignoreArray.map((item) => {
+      if (directory === ".") return item;
+      return `${item.replace(RegExp(`^(${directory}\/)`, "g"), "")}`;
+    });
     this.exitCleanupCB = () => {
       exitCleanupCB(directory);
     };
+
+    this.addWatch();
     this.setupExit();
   }
 
@@ -91,6 +98,10 @@ export class Watch {
       this.children.forEach((child) => child.kill(9));
 
       if (!resp.is_fresh_instance && resp.files) {
+        for (const ignore of this.ignoreArray) {
+          if (resp.files.some((file) => file.name === ignore)) return;
+        }
+
         console.log(
           labels.changed,
           ...resp.files.reduce<string[]>((acc, file) => {
