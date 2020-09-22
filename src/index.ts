@@ -40,11 +40,11 @@ program
   )
   .option(
     "-t, --target <directory...>",
-    "Watches <directory> for changes",
+    "Watches <directory> for changes.",
   )
   .option(
-    "-i, --ignore <files/directories>",
-    "Ignores specified <files/directories> within targets",
+    "-i, --ignore <files>",
+    "Ignores specified <files> within targets.\nMust be supplied as comma separated list of relative paths.",
   )
   .action(async ({ options, args }) => {
     const t = typeof options.target === "object"
