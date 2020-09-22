@@ -95,8 +95,6 @@ export class Watch {
     this.client.on("subscription", (resp: SubscriptionResponse) => {
       if (resp.subscription !== this.directory) return;
 
-      this.children.forEach((child) => child.kill(9));
-
       if (!resp.is_fresh_instance && resp.files) {
         for (const ignore of this.ignoreArray) {
           if (resp.files.some((file) => file.name === ignore)) return;
@@ -117,6 +115,8 @@ export class Watch {
           }, []),
         );
       }
+
+      this.children.forEach((child) => child.kill(9));
 
       if (this.synchronously) {
         this.spawnSynchronously();
