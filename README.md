@@ -1,5 +1,4 @@
-<a name="README"></a>
-## Watch directories for changes and run commands.
+## Watch directories for changes and run commands.<a name="README"></a>
 
 ### Installation
 
