@@ -5,7 +5,8 @@ Watch directories for changes and run commands.
 ## Installation
 
 1. Install [watchman](https://facebook.github.io/watchman/).
-2. Run `npm install --global @vigi-p/fbw`.
+2. Install [@vigi-p/fbw](https://www.npmjs.com/package/@vigi-p/fbw)
+   - `npm install --global @vigi-p/fbw`.
 
 ## Usage
 
@@ -13,6 +14,10 @@ Watch directories for changes and run commands.
 - `fbw sync -t=src -r='echo src:1' -t=dist -r='echo dist:1' -t=src -r='echo src:2' -t=dist -r='echo dist:2'`.
 - Help - `fbw --help`.
 
+## Documentation
+
+Typedoc generated documentation [here](https://ViGi-P.github.io/fuzz-barnacle-watch/docs).
+
 ## Known bugs
 
-- Unintended behaviour when passing npm scripts as commands. To avoid such cases, call fbw within npm instead of calling npm within fbw.
+- Unintended behaviour when passing npm scripts as commands. To avoid such cases, call fbw from npm instead of calling npm from fbw 🙆‍♂️.
