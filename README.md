@@ -1,5 +1,4 @@
-# fuzz-barnacle-watch (fbw) <a name="README"></a>
-
+<a name="README"></a>
 Watch directories for changes and run commands.
 
 ## Installation
