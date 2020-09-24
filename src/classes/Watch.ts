@@ -1,6 +1,6 @@
 import watchman from "fb-watchman";
 import { chalk } from "@caporal/core";
-import { spawn, ChildProcess, spawnSync } from "child_process";
+import { spawn, ChildProcess } from "child_process";
 import { exitSignals, labels } from "../utils";
 
 interface WatchResponse {
@@ -116,7 +116,7 @@ export class Watch {
         );
       }
 
-      this.children.forEach((child) => child.kill(9));
+      this.children.forEach((child) => child.kill(2));
 
       if (this.synchronously) {
         this.spawnSynchronously();
@@ -127,41 +127,69 @@ export class Watch {
   }
 
   private spawnSynchronously() {
-    for (const command of this.commands) {
+    const execute = (command: string, i: number) => {
       const splitCommand = command.split(" ");
-      console.log(
-        labels.executing,
-        chalk.white.underline(command),
-      );
-      const { status } = spawnSync(
-        splitCommand[0],
-        splitCommand.slice(1),
-        { stdio: "inherit", timeout: 10000 },
-      );
-      console.log(
-        chalk.white(`${chalk.underline(command)} exited with status:`),
-        status,
-      );
-    }
-  }
-
-  private spawnConcurrently() {
-    for (const command of this.commands) {
-      const splitCommand = command.split(" ");
-      console.log(
-        labels.executing,
-        chalk.white.underline(command),
-      );
       const child = spawn(
         splitCommand[0],
         splitCommand.slice(1),
         { stdio: "inherit" },
       );
+      console.log(
+        labels.executing,
+        chalk.cyanBright(`${child.pid}`),
+        chalk.white.underline.bold(command),
+      );
       this.children.push(child);
-      child.on("exit", (status) => {
+      child.on("exit", (status, signal) => {
         console.log(
-          chalk.white(`${chalk.underline(command)} exited with status:`),
+          labels.exited,
+          chalk.cyanBright(`${child.pid}`),
+          chalk.white.underline.bold(command),
+          labels.exitStatus,
           status,
+          labels.exitSignal,
+          signal,
+        );
+
+        this.children.splice(
+          this.children.findIndex((ch) => ch.pid === child.pid),
+          1,
+        );
+
+        if (
+          this.commands[i + 1] && exitSignals.every((sig) => sig !== signal)
+        ) {
+          execute(this.commands[i + 1], i + 1);
+        }
+      });
+    };
+
+    execute(this.commands[0], 0);
+  }
+
+  private spawnConcurrently() {
+    for (const command of this.commands) {
+      const splitCommand = command.split(" ");
+      const child = spawn(
+        splitCommand[0],
+        splitCommand.slice(1),
+        { stdio: "inherit" },
+      );
+      console.log(
+        labels.executing,
+        chalk.cyanBright(`${child.pid}`),
+        chalk.white.underline.bold(command),
+      );
+      this.children.push(child);
+      child.on("exit", (status, signal) => {
+        console.log(
+          labels.exited,
+          chalk.cyanBright(`${child.pid}`),
+          chalk.white.underline.bold(command),
+          labels.exitStatus,
+          status,
+          labels.exitSignal,
+          signal,
         );
 
         this.children.splice(
@@ -191,8 +219,8 @@ export class Watch {
         }
 
         this.client.end();
+        this.children.forEach((child) => child.kill(2));
         this.exitCleanupCB();
-        this.children.forEach((child) => child.kill(9));
       },
     );
   }

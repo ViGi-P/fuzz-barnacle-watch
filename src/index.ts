@@ -4,15 +4,16 @@ import { program, chalk } from "@caporal/core";
 import { ValidOptions, FBW } from "./classes";
 import { labels } from "./utils";
 
+/** @internal */
 const packageDetails = require("../package.json");
-
+/** @internal */
 const syncMessage =
   `Enables synchronous execution of commands associated with each target context.
 i.e. if there are multiple commands associated with a particular target, only these commands will be executed synchronously w.r.t. each other. No synchronicity is established between different targets.
 In EXAMPLES <2>, there are two commands associated with \`src\` & two commands associated with \`dist\`.
 'echo src:1' will always execute before 'echo src:2' & 'echo dist:1' will always execute before 'echo dist:2'. No other order of execution can be predetermined.
 `;
-
+/** @internal */
 const examples = [
   chalk.yellowBright(
     "fbw --target=src --run='echo changed' --target=./src --run='echo another' --ignore='src/db.json, src/mockData.js'",
