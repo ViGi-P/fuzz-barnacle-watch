@@ -5,8 +5,7 @@
 ### Installation
 
 1. Install [watchman](https://facebook.github.io/watchman/).
-2. Install [@vigi-p/fbw](https://www.npmjs.com/package/@vigi-p/fbw)
-   - `npm install --global @vigi-p/fbw`.
+2. Install [@vigi-p/fbw](https://www.npmjs.com/package/@vigi-p/fbw) - `npm install --global @vigi-p/fbw`.
 
 ### Usage
 
