@@ -67,7 +67,7 @@ export class Watch {
           throw error;
         }
 
-        if (resp.warning) {
+        if (resp?.warning) {
           console.warn(labels.warn, resp.warning);
         }
 
@@ -214,7 +214,7 @@ export class Watch {
           this.client.cancelCommands(error.message);
         }
 
-        if (resp.warning) {
+        if (resp?.warning) {
           console.warn(labels.warn, resp.warning);
         }
 
