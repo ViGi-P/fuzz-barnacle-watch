@@ -1,5 +1,5 @@
 theme: jekyll-theme-primer
-name: fuzz-barnacle-watch
+name: fbw
 title: null
 include:
   - '_*_.html'
