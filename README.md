@@ -1,3 +1,5 @@
+![Logo](./logo.png)
+
 ## Watch directories for changes and run commands.<a name="README"></a>
 
 ### Installation

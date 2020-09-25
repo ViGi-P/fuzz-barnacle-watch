@@ -3,6 +3,7 @@
   "version": "2.1.5",
   "description": "Watch directories for changes and run commands",
   "main": "dist/index.js",
+  "icon": "logo.png",
   "files": [
     "/dist"
   ],
