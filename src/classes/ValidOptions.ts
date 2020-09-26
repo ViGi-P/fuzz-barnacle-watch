@@ -48,7 +48,7 @@ export class ValidOptions {
 
   constructor(targets: ParsedOption, commands: ParsedOption) {
     if (typeof targets !== "object") targets = [targets];
-    if (typeof commands !== "object") commands = [commands];
+    if (typeof commands !== "object") commands = !commands ? [] : [commands];
     try {
       if (targets.length === commands.length) {
         this.data = ValidOptions.parseData(
@@ -56,9 +56,10 @@ export class ValidOptions {
           commands.map(ValidOptions.parseCommand),
         );
       } else {
+        console.error(targets, commands);
         throw new Error(
-          `${targets.length} target${(targets.length > 1 && "s") ||
-            ""} & ${commands.length} command${(targets.length > 1 && "s") ||
+          `${targets.length} target${(targets.length !== 1 && "s") ||
+            ""} & ${commands.length} command${(commands.length !== 1 && "s") ||
             ""} found. Each target should have its own corresponding command`,
         );
       }

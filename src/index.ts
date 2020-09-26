@@ -48,13 +48,11 @@ program
     "Ignores specified <files> within targets.\nMust be supplied as comma separated list of relative paths.",
   )
   .action(async ({ options, args }) => {
-    const t = typeof options.target === "object"
-      ? options.target
-      : [options.target];
+    const t = options.target;
     const i = `${options.ignore}`.split(",").map((item) =>
       ValidOptions.parseTarget(item.trim())
     );
-    const r = typeof options.run === "object" ? options.run : [options.run];
+    const r = options.run;
     const s = Object.keys(args).some((key) => key === "sync");
     try {
       const options = new ValidOptions(t, r);
