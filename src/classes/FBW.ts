@@ -43,7 +43,9 @@ export class FBW {
   private setupExit() {
     const safeExit = (eventType: string) => {
       if (Object.keys(this.options).length === 0) {
-        console.log(chalk.whiteBright(`Shutting down.`));
+        console.log(
+          chalk.whiteBright(`\n${eventType} triggered. Shutting down.`),
+        );
         process.exit(0);
       } else {
         setTimeout(() => {
@@ -54,7 +56,6 @@ export class FBW {
 
     exitSignals.forEach((eventType) => {
       process.on(eventType, () => {
-        console.log(chalk.whiteBright(`\n${eventType} triggered.`));
         safeExit(eventType);
       });
     });

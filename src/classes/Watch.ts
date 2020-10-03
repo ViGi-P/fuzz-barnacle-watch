@@ -136,15 +136,13 @@ export class Watch {
       );
       console.log(
         labels.executing,
-        chalk.cyanBright(`${child.pid}`),
-        chalk.white.underline.bold(command),
+        chalk.white.underline.bold(`(${child.pid}) ${command}`),
       );
       this.children.push(child);
       child.on("exit", (status, signal) => {
         console.log(
           labels.exited,
-          chalk.cyanBright(`${child.pid}`),
-          chalk.white.underline.bold(command),
+          chalk.white.underline.bold(`(${child.pid}) ${command}`),
           labels.exitStatus,
           status,
           labels.exitSignal,
@@ -177,15 +175,13 @@ export class Watch {
       );
       console.log(
         labels.executing,
-        chalk.cyanBright(`${child.pid}`),
-        chalk.white.underline.bold(command),
+        chalk.white.underline.bold(`(${child.pid}) ${command}`),
       );
       this.children.push(child);
       child.on("exit", (status, signal) => {
         console.log(
           labels.exited,
-          chalk.cyanBright(`${child.pid}`),
-          chalk.white.underline.bold(command),
+          chalk.white.underline.bold(`(${child.pid}) ${command}`),
           labels.exitStatus,
           status,
           labels.exitSignal,

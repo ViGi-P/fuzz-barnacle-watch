@@ -1,6 +1,6 @@
 {
   "name": "@vigi-p/fbw",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "Watch directories for changes and run commands",
   "main": "dist/index.js",
   "icon": "logo.png",
