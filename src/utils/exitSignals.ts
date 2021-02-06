@@ -6,6 +6,5 @@ export const exitSignals = [
   "SIGABRT",
   "SIGILL",
   "SIGQUIT",
-  "SIGTSTP",
   "SIGXFSZ",
 ];
