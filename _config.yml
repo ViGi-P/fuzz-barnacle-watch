@@ -1,9 +1,10 @@
+theme: jekyll-theme-primer
 name: fbw
 title: fuzz-barnacle-watch
 description: Not nodemon; not chokidar.
-remote_theme: pages-themes/primer@v0.2.0
-plugins:
-  - jekyll-remote-theme
+# remote_theme: pages-themes/primer@v0.2.0
+# plugins:
+# - jekyll-remote-theme
 future: true
 timezone: Europe/London
 include:
