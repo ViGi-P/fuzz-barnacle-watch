@@ -2,7 +2,7 @@
 
 ## Watch directories for changes and run commands.<a name="README"></a>
 
-[Github repo](https://github.com/ViGi-P/fuzz-barnacle-watch)
+[Github repository](https://github.com/ViGi-P/fuzz-barnacle-watch)
 
 ### Installation
 
