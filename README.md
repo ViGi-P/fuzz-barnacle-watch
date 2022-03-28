@@ -1,8 +1,8 @@
-[![Logo](./logo.png)](https://github.com/ViGi-P/fuzz-barnacle-watch)
+[![Logo](./logo.png)](https://fbw.vigneshprasad.com)
 
 ## Watch directories for changes and run commands.<a name="README"></a>
 
-[Website](https://github.com/ViGi-P/fuzz-barnacle-watch)
+[Github repo](https://github.com/ViGi-P/fuzz-barnacle-watch)
 
 ### Installation
 
