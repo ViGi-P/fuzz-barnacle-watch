@@ -2,6 +2,8 @@
 
 ## Watch directories for changes and run commands.<a name="README"></a>
 
+[Website](https://github.com/ViGi-P/fuzz-barnacle-watch)
+
 ### Installation
 
 1. Install [watchman](https://facebook.github.io/watchman/).
